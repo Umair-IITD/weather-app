@@ -11,7 +11,11 @@ interface Coordinates {
   lon: number;
 }
 
-function FlyToActiveCity({ activeCityCoords }: { activeCityCoords: Coordinates }) {
+function FlyToActiveCity({
+  activeCityCoords,
+}: {
+  activeCityCoords: Coordinates;
+}) {
   const map = useMap();
 
   useEffect(() => {
@@ -21,7 +25,11 @@ function FlyToActiveCity({ activeCityCoords }: { activeCityCoords: Coordinates }
         duration: 1.5,
       };
 
-      map.flyTo({ lat: activeCityCoords.lat, lng: activeCityCoords.lon }, zoomLev, flyToOptions);
+      map.flyTo(
+        { lat: activeCityCoords.lat, lng: activeCityCoords.lon },
+        zoomLev,
+        flyToOptions
+      );
     }
   }, [activeCityCoords, map]);
 
@@ -39,7 +47,7 @@ function Mapbox() {
 
   return (
     <div className="flex-1 basis-[50%] border rounded-lg">
-      <MapContainer
+      {/* <MapContainer
         center={{ lat: activeCityCoords.lat, lng: activeCityCoords.lon }}
         zoom={13}
         scrollWheelZoom={false}
@@ -51,6 +59,19 @@ function Mapbox() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
+        <FlyToActiveCity activeCityCoords={activeCityCoords} />
+      </MapContainer> */}
+      <MapContainer
+        center={[activeCityCoords.lat, activeCityCoords.lon]} // use array, not object
+        zoom={13}
+        scrollWheelZoom={false}
+        className="rounded-lg m-4"
+        style={{ height: "calc(100% - 2rem)", width: "calc(100% - 2rem)" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
         <FlyToActiveCity activeCityCoords={activeCityCoords} />
       </MapContainer>
     </div>
